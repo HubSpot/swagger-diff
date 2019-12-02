@@ -24,8 +24,8 @@ public class ParameterDiff {
   private List<Parameter> missing;
   private List<ChangedParameter> changed;
 
-  Map<String, Model> oldDedinitions;
-  Map<String, Model> newDedinitions;
+  Map<String, Model> oldDefinitions;
+  Map<String, Model> newDefinitions;
 
   private ParameterDiff() {
   }
@@ -33,8 +33,8 @@ public class ParameterDiff {
   public static ParameterDiff buildWithDefinition(Map<String, Model> left,
                                                   Map<String, Model> right) {
     ParameterDiff diff = new ParameterDiff();
-    diff.oldDedinitions = left;
-    diff.newDedinitions = right;
+    diff.oldDefinitions = left;
+    diff.newDefinitions = right;
     return diff;
   }
 
@@ -72,10 +72,10 @@ public class ParameterDiff {
           if (leftSchema instanceof RefModel && rightSchema instanceof RefModel) {
             String leftRef = ((RefModel) leftSchema).getSimpleRef();
             String rightRef = ((RefModel) rightSchema).getSimpleRef();
-            Model leftModel = oldDedinitions.get(leftRef);
-            Model rightModel = newDedinitions.get(rightRef);
+            Model leftModel = oldDefinitions.get(leftRef);
+            Model rightModel = newDefinitions.get(rightRef);
             String aRef = leftRef != null ? leftRef : rightRef;
-            ModelDiff diff = ModelDiff.buildWithDefinition(oldDedinitions, newDedinitions).diff(leftModel, rightModel, aRef);
+            ModelDiff diff = ModelDiff.buildWithDefinition(oldDefinitions, newDefinitions).diff(leftModel, rightModel, aRef);
             changedParameter.setIncreased(diff.getIncreased());
             changedParameter.setMissing(diff.getMissing());
             changedParameter.setChanged(diff.getChanged());

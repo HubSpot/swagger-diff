@@ -12,38 +12,35 @@ import io.swagger.models.properties.RefProperty;
 
 public class PropertyDiff {
 
-  private List<ElProperty> increased;
-  private List<ElProperty> missing;
-  private List<ElProperty> changed;
+  private List<ElProperty> increased = new ArrayList<>();
+  private List<ElProperty> missing = new ArrayList<>();
+  private List<ElProperty> changed = new ArrayList<>();
 
-  Map<String, Model> oldDedinitions;
-  Map<String, Model> newDedinitions;
+  Map<String, Model> oldDefinitions;
+  Map<String, Model> newDefinitions;
 
   private PropertyDiff() {
-    increased = new ArrayList<ElProperty>();
-    missing = new ArrayList<ElProperty>();
-    changed = new ArrayList<ElProperty>();
   }
 
   public static PropertyDiff buildWithDefinition(Map<String, Model> left,
                                                  Map<String, Model> right) {
     PropertyDiff diff = new PropertyDiff();
-    diff.oldDedinitions = left;
-    diff.newDedinitions = right;
+    diff.oldDefinitions = left;
+    diff.newDefinitions = right;
     return diff;
   }
 
   public PropertyDiff diff(Property left, Property right) {
     if ((null == left || left instanceof RefProperty) && (null == right || right instanceof RefProperty)) {
-      Model leftModel = null == left ? null : oldDedinitions.get(((RefProperty) left).getSimpleRef());
-      Model rightModel = null == right ? null : newDedinitions.get(((RefProperty) right).getSimpleRef());
+      Model leftModel = null == left ? null : oldDefinitions.get(((RefProperty) left).getSimpleRef());
+      Model rightModel = null == right ? null : newDefinitions.get(((RefProperty) right).getSimpleRef());
       String ref = leftModel != null
           ? ((RefProperty) left).getSimpleRef()
           : right != null
           ? ((RefProperty) right).getSimpleRef()
           : null;
       ModelDiff diff = ModelDiff
-          .buildWithDefinition(oldDedinitions, newDedinitions)
+          .buildWithDefinition(oldDefinitions, newDefinitions)
           .diff(leftModel, rightModel, ref);
       increased.addAll(diff.getIncreased());
       missing.addAll(diff.getMissing());

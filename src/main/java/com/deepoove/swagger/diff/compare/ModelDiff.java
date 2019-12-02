@@ -26,29 +26,29 @@ public class ModelDiff {
   private List<ElProperty> missing;
   private List<ElProperty> changed;
 
-  Map<String, Model> oldDedinitions;
-  Map<String, Model> newDedinitions;
+  Map<String, Model> oldDefinitions;
+  Map<String, Model> newDefinitions;
 
   private ModelDiff() {
-    increased = new ArrayList<ElProperty>();
-    missing = new ArrayList<ElProperty>();
-    changed = new ArrayList<ElProperty>();
+    increased = new ArrayList<>();
+    missing = new ArrayList<>();
+    changed = new ArrayList<>();
   }
 
   public static ModelDiff buildWithDefinition(Map<String, Model> left,
       Map<String, Model> right) {
     ModelDiff diff = new ModelDiff();
-    diff.oldDedinitions = left;
-    diff.newDedinitions = right;
+    diff.oldDefinitions = left;
+    diff.newDefinitions = right;
     return diff;
   }
 
   public ModelDiff diff(Model leftModel, Model rightModel) {
-    return this.diff(leftModel, rightModel, null, null, new HashSet<Model>());
+    return this.diff(leftModel, rightModel, null, null, new HashSet<>());
   }
 
   public ModelDiff diff(Model leftModel, Model rightModel, String parentModel) {
-    return this.diff(leftModel, rightModel, null, parentModel, new HashSet<Model>());
+    return this.diff(leftModel, rightModel, null, parentModel, new HashSet<>());
   }
 
   private ModelDiff diff(Model leftModel, Model rightModel, String parentEl, String parentModel, Set<Model> visited) {
@@ -76,7 +76,7 @@ public class ModelDiff {
         String leftRef = ((RefProperty) left).getSimpleRef();
         String rightRef = ((RefProperty) right).getSimpleRef();
 
-        diff(oldDedinitions.get(leftRef), newDedinitions.get(rightRef),
+        diff(oldDefinitions.get(leftRef), newDefinitions.get(rightRef),
             buildElString(parentEl, key), leftRef,
             copyAndAdd(visited, leftModel, rightModel));
 
