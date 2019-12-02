@@ -1,5 +1,7 @@
 package com.deepoove.swagger.diff.compare;
 
+import static com.deepoove.swagger.diff.DiffConfig.Property.VENDOR_EXTENSIONS;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.deepoove.swagger.diff.DiffConfig;
 import com.deepoove.swagger.diff.model.ChangedEndpoint;
 import com.deepoove.swagger.diff.model.ChangedExtensionGroup;
 import com.deepoove.swagger.diff.model.ChangedOperation;
@@ -38,12 +41,12 @@ public class SpecificationDiff extends ChangedExtensionGroup {
   }
 
   public static SpecificationDiff diff(Swagger oldSpec, Swagger newSpec) {
-    return diff(oldSpec, newSpec, false);
+    return diff(oldSpec, newSpec, DiffConfig.withNoOverrides());
   }
 
-  public static SpecificationDiff diff(Swagger oldSpec, Swagger newSpec, boolean withExtensions) {
+  public static SpecificationDiff diff(Swagger oldSpec, Swagger newSpec, DiffConfig config) {
     SpecificationDiff instance = new SpecificationDiff();
-    VendorExtensionDiff extDiffer = new VendorExtensionDiff(withExtensions);
+    VendorExtensionDiff extDiffer = new VendorExtensionDiff(config.get(VENDOR_EXTENSIONS));
     if (null == oldSpec || null == newSpec) {
       throw new IllegalArgumentException("cannot diff null spec.");
     }

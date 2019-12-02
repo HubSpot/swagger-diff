@@ -1,6 +1,7 @@
 package com.deepoove.swagger.diff;
 
-import java.io.IOException;
+import static com.deepoove.swagger.diff.DiffConfig.Property.VENDOR_EXTENSIONS;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,11 +38,18 @@ public class SwaggerDiff {
    * @param newSpec new Swagger specification document in v2.0 format as a JsonNode
    */
   public static SwaggerDiff compareV2(JsonNode oldSpec, JsonNode newSpec) {
-    return compareV2(oldSpec, newSpec, false);
+    return compareV2(oldSpec, newSpec, DiffConfig.withNoOverrides());
   }
 
   public static SwaggerDiff compareV2(JsonNode oldSpec, JsonNode newSpec, boolean withExtensions) {
-    return new SwaggerDiff(oldSpec, newSpec).compare(withExtensions);
+    DiffConfig config = DiffConfig.builder()
+        .set(VENDOR_EXTENSIONS, withExtensions)
+        .build();
+    return new SwaggerDiff(oldSpec, newSpec).compare(config);
+  }
+
+  public static SwaggerDiff compareV2(JsonNode oldSpec, JsonNode newSpec, DiffConfig config) {
+    return new SwaggerDiff(oldSpec, newSpec).compare(config);
   }
 
   private SwaggerDiff(JsonNode oldSpec, JsonNode newSpec) {
@@ -54,8 +62,8 @@ public class SwaggerDiff {
     }
   }
 
-  private SwaggerDiff compare(boolean withExtensions) {
-    SpecificationDiff diff = SpecificationDiff.diff(oldSpecSwagger, newSpecSwagger, withExtensions);
+  private SwaggerDiff compare(DiffConfig config) {
+    SpecificationDiff diff = SpecificationDiff.diff(oldSpecSwagger, newSpecSwagger, config);
     this.newEndpoints = diff.getNewEndpoints();
     this.missingEndpoints = diff.getMissingEndpoints();
     this.changedEndpoints = diff.getChangedEndpoints();
