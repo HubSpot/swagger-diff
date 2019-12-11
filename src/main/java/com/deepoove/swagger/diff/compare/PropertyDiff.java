@@ -49,11 +49,13 @@ public class PropertyDiff {
       missing.addAll(diff.getMissing());
       changed.addAll(diff.getChanged());
     } else {
-      ModelDiff diff = ModelDiff
-          .buildWithDefinition(oldDedinitions, newDedinitions);
-      increased.addAll(diff.getIncreased());
-      missing.addAll(diff.getMissing());
-      changed.addAll(diff.getChanged());
+      if (left != null && right != null && !left.equals(right)) {
+
+        ModelDiff diff = ModelDiff.buildWithDefinition(oldDedinitions, newDedinitions);
+        increased.addAll(diff.getIncreased());
+        missing.addAll(diff.getMissing());
+        changed.addAll(diff.getChanged());
+      }
       System.out.println("Could not diff properties");
     }
     return this;
@@ -61,6 +63,18 @@ public class PropertyDiff {
 
   public List<ElProperty> getIncreased() {
     return increased;
+  }
+
+  private String buildElString(String parentEl, String propName) {
+    return null == parentEl ? propName : (parentEl + "." + propName);
+  }
+
+  public ElProperty convert2ElProperty(String propName, String parentEl, String parentModel, Property property) {
+    ElProperty pWithPath = new ElProperty();
+    pWithPath.setProperty(property);
+    pWithPath.setEl(buildElString(parentEl, propName));
+    pWithPath.setParentModelName(parentModel);
+    return pWithPath;
   }
 
   public void setIncreased(List<ElProperty> increased) {

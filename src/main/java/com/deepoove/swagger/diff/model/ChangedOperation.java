@@ -77,7 +77,7 @@ public class ChangedOperation extends ChangedExtensionGroup implements Changed {
   public boolean isDiff() {
     return !addParameters.isEmpty() || !missingParameters.isEmpty()
         || !changedParameter.isEmpty() || !addProps.isEmpty()
-        || !missingProps.isEmpty() || vendorExtensionsAreDiff();
+        || !missingProps.isEmpty() || !changedProps.isEmpty() || vendorExtensionsAreDiff();
   }
   public boolean isDiffProp(  ) {
     return !addProps.isEmpty()
