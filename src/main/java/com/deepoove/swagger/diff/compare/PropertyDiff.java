@@ -48,6 +48,8 @@ public class PropertyDiff {
       increased.addAll(diff.getIncreased());
       missing.addAll(diff.getMissing());
       changed.addAll(diff.getChanged());
+    } else {
+      System.out.println("Could not diff properties");
     }
     return this;
   }
