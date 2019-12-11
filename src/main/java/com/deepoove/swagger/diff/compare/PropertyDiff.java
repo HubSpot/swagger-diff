@@ -49,6 +49,11 @@ public class PropertyDiff {
       missing.addAll(diff.getMissing());
       changed.addAll(diff.getChanged());
     } else {
+      ModelDiff diff = ModelDiff
+          .buildWithDefinition(oldDedinitions, newDedinitions);
+      increased.addAll(diff.getIncreased());
+      missing.addAll(diff.getMissing());
+      changed.addAll(diff.getChanged());
       System.out.println("Could not diff properties");
     }
     return this;
