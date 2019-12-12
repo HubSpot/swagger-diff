@@ -50,13 +50,8 @@ public class PropertyDiff {
       changed.addAll(diff.getChanged());
     } else {
       if (left != null && right != null && !left.equals(right)) {
-
-        ModelDiff diff = ModelDiff.buildWithDefinition(oldDedinitions, newDedinitions);
-        increased.addAll(diff.getIncreased());
-        missing.addAll(diff.getMissing());
-        changed.addAll(diff.getChanged());
+        changed.add(this.convert2ElProperty("response type", null, null, left));
       }
-      System.out.println("Could not diff properties");
     }
     return this;
   }
